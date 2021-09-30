@@ -1,0 +1,58 @@
+#include <stdio.h>
+#include <math.h>
+
+double func1(double delta, double x, double mu);
+double func2(double delta, double x, double mu);
+
+void main(void)
+{
+
+double delta = 0,mu = 0;
+
+int k;
+for(k=1; k<170;k++)
+{
+    delta =0.39+0.01*k;
+
+int j;
+for (j=1; j<10000;j++)
+{
+    mu = 2.8-j*0.01;
+
+	double S1 = 0, h1;
+	int i;
+	
+	h1 = 0.001;
+	double a = h1 ;
+	S1 = (func1(delta,a,mu)+func1(delta,1000,mu))/2.0;
+	for(i=1; a+i*h1<1000; i++) S1 += func1(delta,a+i*h1,mu);
+	S1 *= h1;
+if(S1<=1)break;
+
+S1=0;
+}
+
+	double S2 = 0,SS, h2;
+	int i;
+	
+	h2 = 0.00001;
+	double a = h2;
+	S2 = (func2(delta,a,mu)+func2(delta,100,mu))/2.0;
+	for(i=1; a+i*h2<100; i++) S2 += func2(delta,a+i*h2,mu);
+	S2 *= h2;
+	SS = -S2/M_PI;
+printf("%f %f %f\n",delta ,mu,SS);
+
+}
+
+}
+
+double func1(double de, double x,double mu)
+{
+	return(0.75*(1-1/sqrt(1+de*de/((x-mu)*(x-mu))))*sqrt(x));
+}
+
+double func2(double de, double x,double mu)
+{
+	return(1/sqrt((x-mu)*(x-mu)/x+(de*de)/x)-1/sqrt(x));
+}
